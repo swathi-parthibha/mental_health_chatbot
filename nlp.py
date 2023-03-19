@@ -22,16 +22,6 @@ output_doc = vectorizer.fit_transform(cleaned_patterns).toarray()
 
 index_to_vocab = {i: v for i, v in enumerate(vectorizer.get_feature_names())}
 
-# print(index_to_vocab)
-# print(output_doc[0])
-# print(output_doc[0].tolist().index(1))
-# print(cleaned_patterns)
-# print(output_doc[55])
-# print(cleaned_patterns.index("i feel down"))
-
-# print(index_to_vocab)
-# print(index_to_vocab.values())
-
 user_input_words = [item.lower() for item in user_input.split(" ")]
 user_input_cleaned = ["".join(
     [char for char in item if char not in punctuation_to_remove]) for item in user_input_words]
