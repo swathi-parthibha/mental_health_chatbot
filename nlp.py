@@ -1,4 +1,5 @@
 import json
+import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 user_input = "Hi, I'm feeling down today"
