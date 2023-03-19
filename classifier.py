@@ -38,7 +38,8 @@ patterns = [item.lower() for item in patterns]
 # however, we don't want the training data to be in terms of strings
 # we need a way to turn the strings into numbers!
 
-vectorizer = CountVectorizer()
+vectorizer = CountVectorizer(
+    max_df=0.7, min_df=1)
 X = vectorizer.fit_transform(patterns).toarray()
 n = X.shape[0]  # num rows
 Y = np.array([index for _, index in pattern_dict.items()])
@@ -75,7 +76,6 @@ def PXY_mle_label(x, y, label):
     Output:
     prob: probability vector of p(x|y=label) (1xd)
     """
-
     n, d = np.shape(x)
     total_letters = 0
     count = []
@@ -120,7 +120,6 @@ def naivebayes(x, y, xtest):
     Output:
     list probs: where probs[i] is the probability of P(y = i | x = xtest)
     """
-
     probsPXY = naivebayesPXY_mle(x, y)
     probsPY = naivebayesPY(x, y)
     probs = np.zeros(classes)
@@ -146,11 +145,12 @@ def naivebayes(x, y, xtest):
 
 def classify(x, y, xtest):
     result = naivebayes(x, y, xtest)
+    print(result)
     label = result.argmax()
     return label
 
 
-xtest = vectorizer.transform(['I am feeling down']).toarray()[0]
-print(pattern_dict)
+xtest = vectorizer.transform(['I am feeling so downcast']).toarray()[0]
+print(xtest)
+# print(pattern_dict)
 print(classify(X, Y, xtest))
-
