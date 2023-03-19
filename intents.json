@@ -27,10 +27,6 @@
      "patterns": ["Thanks", "Thank you", "That's helpful", "Thanks for the help", "Than you very much"],
      "responses": ["Happy to help!", "Any time!", "My pleasure", "You're most welcome!"]
     },
-    {"tag": "no-response",
-        "patterns": [""],
-        "responses": ["Sorry, I didn't understand you.", "Please go on.", "Not sure I understand that.", "Please don't hesitate to talk to me."]
-    },
     {"tag": "neutral-response",
         "patterns": ["nothing much"],
         "responses": ["Oh I see. Do you want to talk about something?"]
@@ -76,7 +72,7 @@
         "responses": ["That's geat to hear. I'm glad you're feeling this way.", "Oh i see. That's great.", "Did something happen which made you feel this way?"]
     },
     {"tag": "casual",
-        "patterns": ["Oh I see.", "ok", "okay", "nice", "Whatever", "K", "Fine", "yeah", "yes", "no", "not really"],
+        "patterns": ["Oh I see.", "ok", "okay", "nice", "Whatever", "K", "Fine", "yeah", "yes", "no"],
         "responses": ["Let's discuss further why you're feeling this way.", "How were you feeling last week?", "I'm listening. Please go on.", "Tell me more", "Can you elaborate on that?", "Come Come elucidate your thoughts"]
     },
     {"tag": "anxious",
@@ -110,7 +106,7 @@
     {"tag": "suicide",
         "patterns": ["I want to kill myself", "I've thought about killing myself.", "I want to die", "I am going to kill myself", "I am going to commit suicide"],
         "responses": ["I'm very sorry to hear that but you have so much to look forward to. Please seek help by contacting: 9152987821."]
-    }, 
+    },
     {"tag": "hate-you",
         "patterns": ["I hate you", "I don't like you", "I don't trust you"],
         "responses": ["I'm sorry if i offended you in anyway. I'm only here to help", "Forgive me if i did anything to offend you. I only want to help"]
