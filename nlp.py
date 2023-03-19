@@ -1,7 +1,7 @@
 import json
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-user_input = "Hi, I'm feeling down today"
+user_input = "Hi, I'm feeling down today random stuff"
 
 with open('intents.json', 'r') as f:
     data = json.load(f)
@@ -15,10 +15,25 @@ cleaned_patterns = ["".join(
     [char for char in item if char not in punctuation_to_remove]) for item in cleaned_patterns]
 
 vectorizer = TfidfVectorizer(
-    max_df=0.7, min_df=1, max_features=1000, stop_words="english", norm="l2")
+    max_df=0.8, min_df=1, max_features=1000, norm="l2")
+
 output_doc = vectorizer.fit_transform(cleaned_patterns).toarray()
 
-doc_by_vocab = vectorizer.fit_transform(
-    [d['patterns'] for d in data.get("intents")]).toarray()
 index_to_vocab = {i: v for i, v in enumerate(vectorizer.get_feature_names())}
-print(index_to_vocab)
+
+# print(index_to_vocab)
+# print(output_doc[0])
+# print(output_doc[0].tolist().index(1))
+# print(cleaned_patterns)
+# print(output_doc[55])
+# print(cleaned_patterns.index("i feel down"))
+
+# print(index_to_vocab)
+# print(index_to_vocab.values())
+
+user_input_words = [item.lower() for item in user_input.split(" ")]
+user_input_cleaned = ["".join(
+    [char for char in item if char not in punctuation_to_remove]) for item in user_input_words]
+user_input_exists = [word for word in user_input_cleaned if word in index_to_vocab.values()]
+print(user_input_exists)
+
