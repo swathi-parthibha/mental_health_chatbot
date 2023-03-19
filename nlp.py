@@ -18,3 +18,8 @@ cleaned_patterns = ["".join(
 vectorizer = TfidfVectorizer(
     max_df=0.7, min_df=1, max_features=1000, stop_words="english", norm="l2")
 output_doc = vectorizer.fit_transform(cleaned_patterns).toarray()
+
+doc_by_vocab = vectorizer.fit_transform(
+    [d['patterns'] for d in data.get("intents")]).toarray()
+index_to_vocab = {i: v for i, v in enumerate(vectorizer.get_feature_names())}
+print(index_to_vocab)
