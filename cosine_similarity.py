@@ -1,6 +1,12 @@
 import json
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
+from gensim.models import Word2Vec
+from scipy import spatial
+# word2vec - burt embeddings
+# count vectorizer is most basic, tfidf slightly better, word2vec, contextial embeddings
+# more complicated clustering algorithms, supervised clustering 
+
 
 # get the user input 
 user_input = input("Input: ")
@@ -59,4 +65,18 @@ for i in range(len(output_doc) - 1):
             cosine_index = i
 
 # print the pattern at the index found
-print(cleaned_patterns[cosine_index])
+#print(cleaned_patterns[cosine_index])
+
+
+# trying the word2vec vectorizer
+sentences = [sentence.split(" ") for sentence in cleaned_patterns]
+model = Word2Vec(sentences=sentences, vector_size=100, window=5, min_count=1, workers=4)
+
+ws1 = ['hi', "im", "die"]
+ws2 = ['hi', "im", "died"]
+v1 = np.array([model.wv[word] for word in ws1])
+v2 = np.array([model.wv[word] for word in ws2])
+
+# these two are supposed to have the same output but not working !!!
+print(np.dot(np.linalg.norm(v1), np.linalg.norm(v2)))
+print(model.wv.n_similarity(ws1, ws2))

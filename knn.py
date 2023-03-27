@@ -82,5 +82,5 @@ def knn_classify(X_train, xtest, k=5):
   return prediction
 
 
-xtest = vectorizer.transform(['Good afternoon']).toarray()[0]
+xtest = vectorizer.transform(["I feel worthless"]).toarray()[0]
 print(knn_classify(X_train, xtest, k=5))
