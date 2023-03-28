@@ -67,16 +67,19 @@ for i in range(len(output_doc) - 1):
 # print the pattern at the index found
 #print(cleaned_patterns[cosine_index])
 
-
 # trying the word2vec vectorizer
 sentences = [sentence.split(" ") for sentence in cleaned_patterns]
 model = Word2Vec(sentences=sentences, vector_size=100, window=5, min_count=1, workers=4)
 
-ws1 = ['hi', "im", "die"]
-ws2 = ['hi', "im", "died"]
+ws1 = ['hi', "im", "sad"]
+ws2 = ['hi', "im", "sadness"]
+
+# these two are supposed to have the same output but not working !!!
 v1 = np.array([model.wv[word] for word in ws1])
 v2 = np.array([model.wv[word] for word in ws2])
 
-# these two are supposed to have the same output but not working !!!
-print(np.dot(np.linalg.norm(v1), np.linalg.norm(v2)))
-print(model.wv.n_similarity(ws1, ws2))
+l1 = np.mean(v1, axis=0)
+l2 = np.mean(v2, axis=0)
+
+cosine = np.dot(l1/np.linalg.norm(l1), l2/np.linalg.norm(l2))
+print(cosine)
