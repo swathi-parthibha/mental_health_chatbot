@@ -7,6 +7,8 @@ import json
 import numpy as np
 import math
 from sklearn.feature_extraction.text import CountVectorizer
+from nltk.stem import SnowballStemmer
+
 
 with open('intents.json', 'r') as f:
     data = json.load(f)
@@ -28,8 +30,12 @@ for pattern_set in patterns:
 patterns = [inner for outer in patterns for inner in outer]
 patterns = [item.lower() for item in patterns]
 
+# worst vectorizer ever bruh
 vectorizer = CountVectorizer(
     max_df=0.7, min_df=1)
+
+
+
 X = vectorizer.fit_transform(patterns).toarray()
 n = X.shape[0]  # num rows
 Y = np.array([[index] for _, index in pattern_dict.items()])
@@ -104,5 +110,6 @@ def knn_classify(X_train, xtest, k=5):
     return prediction
 
 
-xtest = vectorizer.transform(["I feel worthless"]).toarray()[0]
+snowball = SnowballStemmer(language='english')
+xtest = vectorizer.transform([snowball.stem("I feel worthless")]).toarray()[0]
 print(knn_classify(X_train, xtest, k=5))
