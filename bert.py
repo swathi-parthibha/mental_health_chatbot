@@ -28,7 +28,7 @@ user_input_cleaned = ["".join(
 cleaned_patterns.append(" ".join(user_input_cleaned))
 
 # find the smallest dist and index where it was found
-min_dist = 0
+min_dist = 1000
 min_index = 0
 
 vectorizer = Vectorizer(pretrained_weights='distilbert-base-multilingual-cased')

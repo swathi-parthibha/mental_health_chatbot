@@ -21,6 +21,7 @@ punctuation_to_remove = ["?", "!", ".", "\'", ","]
 cleaned_patterns = ["".join(
     [char for char in item if char not in punctuation_to_remove]) for item in cleaned_patterns]
 
+print(cleaned_patterns)
 # add the input
 # cleans the input by removing punctuation
 user_input_words = [item.lower() for item in user_input.split(" ")]
