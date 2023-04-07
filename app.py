@@ -1,7 +1,12 @@
-from flask import Flask
+from flask import Flask, render_template
+from bert import execute
 
 app = Flask(__name__)
 
 @app.route('/')
 def hello():
-    return '<h1>Hello, World!</h1>'
+    input = "i am sadness"
+    output = execute(input)
+    return render_template('index.html', value = output)
+
+
