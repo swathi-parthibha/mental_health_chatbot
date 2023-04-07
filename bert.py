@@ -1,6 +1,7 @@
 from sent2vec.vectorizer import Vectorizer
 from scipy import spatial
 import json
+from nltk.stem.snowball import SnowballStemmer
 
 def execute(user_input): 
 # get the user input 
@@ -26,7 +27,27 @@ def execute(user_input):
 	user_input_cleaned = ["".join(
 			[char for char in item if char not in punctuation_to_remove]) for item in user_input_words]
 
-	cleaned_patterns.append(" ".join(user_input_cleaned))
+	#implementing the snowball stemmer on the input
+	stemmer = SnowballStemmer("english")
+	user_input_stemmed = []
+	for word in user_input_cleaned: 
+		user_input_stemmed += [stemmer.stem(word)]
+
+	print(user_input_stemmed)
+
+	# further cleans the input by removing words that are not in the pattern
+	# we need to do this because the model created is using the words in the cleaned_patterns
+	pattern_words = []
+	for sentence in cleaned_patterns: 
+		pattern_words += sentence.split()
+
+	for word in user_input_stemmed: 
+		if word not in pattern_words: 
+			user_input_stemmed.remove(word)
+
+	print(user_input_stemmed)
+
+	cleaned_patterns.append(" ".join(user_input_stemmed))
 
 	# find the smallest dist and index where it was found
 	min_dist = 1000
@@ -44,5 +65,7 @@ def execute(user_input):
 			min_index = i
 			
 	# print the pattern at the index found
-	# print(cleaned_patterns[min_index])
+	print(cleaned_patterns[min_index])
 	return(cleaned_patterns[min_index])
+
+execute("i am happy")

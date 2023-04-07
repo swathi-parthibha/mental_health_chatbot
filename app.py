@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello():
-    input = "i am sadness"
+    input = "i am sad"
     output = execute(input)
     return render_template('index.html', value = output)
 
