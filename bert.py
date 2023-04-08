@@ -1,6 +1,6 @@
 from sent2vec.vectorizer import Vectorizer
 from scipy import spatial
-import json
+import json, random
 from nltk.stem.snowball import SnowballStemmer
 
 def execute(user_input): 
@@ -15,6 +15,19 @@ def execute(user_input):
 	patterns = [item["patterns"] for item in data["intents"]]
 	patterns = [inner for outer in patterns for inner in outer]
 	cleaned_patterns = [item.lower() for item in patterns]
+
+	#dictionary that maps pattern to tag
+	pattern_to_tag_dict = {}
+
+	for item in data["intents"]: 
+		for pattern in item["patterns"]: 
+			pattern_to_tag_dict[pattern] = item["tag"]
+
+	#dictionary that maps tag to a response
+	tag_to_response = {}
+
+	for item in data["intents"]: 
+		tag_to_response[item["tag"]] = item["responses"]
 
 	# remove unncessary punctuation 
 	punctuation_to_remove = ["?", "!", ".", "\'", ","]
@@ -33,7 +46,13 @@ def execute(user_input):
 	for word in user_input_cleaned: 
 		user_input_stemmed += [stemmer.stem(word)]
 
-	print(user_input_stemmed)
+	#implementing the snowball stemmber of the patterns as well 
+	for i in range(len(cleaned_patterns)): 
+		pattern = ""
+		word_lst = cleaned_patterns[i].split()
+		for word in word_lst: 
+			pattern = " ".join([pattern, stemmer.stem(word)])
+		cleaned_patterns[i] = pattern
 
 	# further cleans the input by removing words that are not in the pattern
 	# we need to do this because the model created is using the words in the cleaned_patterns
@@ -45,7 +64,12 @@ def execute(user_input):
 		if word not in pattern_words: 
 			user_input_stemmed.remove(word)
 
-	print(user_input_stemmed)
+	#creating a dictionary that maps each cleaned pattern to an index
+	cleaned_pattern_to_index = {}
+	count = 0
+	for pattern in cleaned_patterns:
+		cleaned_pattern_to_index[pattern] = count
+		count += 1
 
 	cleaned_patterns.append(" ".join(user_input_stemmed))
 
@@ -64,6 +88,13 @@ def execute(user_input):
 			min_dist = dist
 			min_index = i
 			
-	# print the pattern at the index found
-	# print(cleaned_patterns[min_index])
-	return(cleaned_patterns[min_index])
+	pattern_found = cleaned_patterns[min_index]
+	pattern_index = cleaned_pattern_to_index[pattern_found]
+	original_pattern = patterns[pattern_index]
+	tag = pattern_to_tag_dict[original_pattern]
+	response = random.choice(tag_to_response[tag])
+
+	print(response)
+	return(response)
+
+# execute(" I feel so anxious.")
