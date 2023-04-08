@@ -1,12 +1,15 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from bert import execute
 
 app = Flask(__name__)
 
-@app.route('/')
+@app.route('/', methods = ['GET', 'POST'])
 def hello():
-    input = "i am sad"
-    output = execute(input)
-    return render_template('index.html', value = output)
+    if request.method == 'POST': 
+        user_input = request.form.get("user_input")
+        output = execute(user_input)
+        return render_template('index.html', value = output)
+    else: 
+        return render_template('index.html')
 
 

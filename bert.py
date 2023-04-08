@@ -65,7 +65,5 @@ def execute(user_input):
 			min_index = i
 			
 	# print the pattern at the index found
-	print(cleaned_patterns[min_index])
+	# print(cleaned_patterns[min_index])
 	return(cleaned_patterns[min_index])
-
-execute("i am happy")
