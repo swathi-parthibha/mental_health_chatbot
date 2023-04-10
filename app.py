@@ -8,7 +8,7 @@ def hello():
     if request.method == 'POST': 
         user_input = request.form.get("user_input")
         output = execute(user_input)
-        return render_template('index.html', value = output)
+        return render_template('index.html', user_input = user_input, bot_output = output)
     else: 
         return render_template('index.html')
 
