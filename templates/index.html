@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <head>
-  <link href="./output.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='output.css') }}">
 </head>
 <body>
-  <h1 class="text-3xl font-bold underline">
+  <h1 class="text-2xl font-bold underline">
     Hello world!
   </h1>
 <form method="POST">
@@ -12,7 +12,7 @@
   <input type="submit" value="Submit">
 </form>
 
-<button class="outline outline-offset-2 outline-blue-500 ...">Button A</button>
+<button class="outline outline-offset-2 outline-blue-500">Button A</button>
 
 <p> {{ value }} </p>
 
