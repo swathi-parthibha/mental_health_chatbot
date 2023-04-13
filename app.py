@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from bert import execute
+import random
 
 app = Flask(__name__)
 
@@ -16,6 +17,6 @@ app = Flask(__name__)
 
 @app.route('/test', methods = ['GET', 'POST'])
 def test(): 
-    return {"hi2": "hello2"}
+    return str(random.randint(0, 5))
 
 
