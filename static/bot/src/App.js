@@ -56,34 +56,45 @@ function App() {
 
   return (
    <div>
-      {/* <button onClick={handleClickButton}>Fetch data</button> */}
+      <div class="grid grid-cols-3 gap-4">
+        <div> </div>
+        <div className="h-screen flex flex-col justify-end">
+          <div>  </div>
+          <div>
+            {userData && userData.map((member, i) => 
+                <div key = {i}>
+                  <div className="chat chat-end">
+                    <div className="chat-image avatar">
+                      <div className="w-10 rounded-full">
+                        <img src="/static/images/person.png" />
+                      </div>
+                    </div>
+                    <div className="chat-bubble chat-bubble-primary">{member}</div>
+                  </div>
 
-     {userData && userData.map((member, i) => 
-        <div key = {i}>
-          <div className="chat chat-start">
-            <div className="chat-image avatar">
-              <div className="w-10 rounded-full">
-                <img src="/static/images/bot.jpeg" />
-              </div>
-            </div>
-            <div className="chat-bubble chat-bubble-secondary">{botData[i]}</div>
-          </div>
+                  <div className="chat chat-start">
+                    <div className="chat-image avatar">
+                      <div className="w-10 rounded-full">
+                        <img src="/static/images/bot.jpeg" />
+                      </div>
+                    </div>
+                    <div className="chat-bubble chat-bubble-secondary">{botData[i]}</div>
+                  </div>
+                </div>
+            )}
 
-          <div className="chat chat-end">
-            <div className="chat-image avatar">
-              <div className="w-10 rounded-full">
-                <img src="/static/images/person.png" />
-              </div>
-            </div>
-            <div className="chat-bubble chat-bubble-primary">{member}</div>
+              <form onSubmit={event => handleClick(event)}>
+                {/* <input onChange={(input) => setUserInput(input.target.value)}/> */}
+
+                <div className="md:w">
+                  <input onChange={(input) => setUserInput(input.target.value)} className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="inline-full-name" type="text" />
+                </div>
+              </form>
           </div>
+          <div class="pt-5"> </div>
         </div>
-     )}
-
-      <form onSubmit={event => handleClick(event)}>
-        <input onChange={(input) => setUserInput(input.target.value)}/>
-      </form>
-  
+        <div></div>
+        </div>
    </div>
   )
 }

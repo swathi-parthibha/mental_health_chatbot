@@ -22,7 +22,7 @@ def test():
 @app.route('/testPost', methods = ['GET', 'POST'])
 def testPost():
     user_input = request.json["user"]
-    bot_output = "bot_output_temporary"
+    bot_output = execute(user_input)
     return {"user_input" : user_input, "bot_output": bot_output}
 
 
