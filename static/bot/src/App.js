@@ -18,6 +18,7 @@ function App() {
   // }, [])
 
   const handleClick = (event) => {
+    setUserData(previous_data => [...previous_data, userInput])
     fetch("/testPost", {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -25,7 +26,7 @@ function App() {
     })
     .then(res => res.json())
     .then(data => {
-      setUserData(previous_data => [...previous_data, data.user_input])
+      // setUserData(previous_data => [...previous_data, data.user_input])
       setBotData(previous_data => [...previous_data, data.bot_output])
       console.log(data)
     })
@@ -56,7 +57,7 @@ function App() {
 
   return (
    <div>
-      <div class="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-3 gap-4">
         <div> </div>
         <div className="h-screen flex flex-col justify-end">
           <div>  </div>
@@ -91,7 +92,7 @@ function App() {
                 </div>
               </form>
           </div>
-          <div class="pt-5"> </div>
+          <div className="pt-5"> </div>
         </div>
         <div></div>
         </div>
