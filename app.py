@@ -19,4 +19,12 @@ app = Flask(__name__)
 def test(): 
     return str(random.randint(0, 5))
 
+@app.route('/testPost', methods = ['GET', 'POST'])
+def testPost():
+    user_input = request.json["user"]
+    bot_output = "bot_output_temporary"
+    return {"user_input" : user_input, "bot_output": bot_output}
+
+
+
 
