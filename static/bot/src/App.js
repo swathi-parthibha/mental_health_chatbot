@@ -8,14 +8,15 @@ function App() {
 
   const [userInput, setUserInput] = useState("")
 
-  // useEffect(() => {
-  //   fetch('/test')
-  //   .then(res => res.text())
-  //   .then(data => {
-  //     setData(previous_data => [...previous_data, data])
-  //     console.log(data)
-  //   })
-  // }, [])
+  useEffect(() => {
+    console.log("inside the useEffect")
+    fetch("/preprocess")
+    .then(res => res.text())
+    .then(data => {
+      console.log(data)
+      console.log("data")
+    })
+  }, [])
 
   const handleClick = (event) => {
     setUserData(previous_data => [...previous_data, userInput])

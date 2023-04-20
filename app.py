@@ -15,9 +15,13 @@ app = Flask(__name__)
 #         return {"hi2": "hello2"}
 #         # return render_template('index.html')
 
-@app.route('/test', methods = ['GET', 'POST'])
+# @app.route('/test', methods = ['GET', 'POST'])
+# def test(): 
+#     return str(random.randint(0, 5))
+
+@app.route("/preprocess", methods = ['GET', 'POST'])
 def test(): 
-    return str(random.randint(0, 5))
+    return "This is the root"
 
 @app.route('/testPost', methods = ['GET', 'POST'])
 def testPost():
