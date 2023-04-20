@@ -94,8 +94,4 @@ def execute(user_input):
 	tag = pattern_to_tag_dict[original_pattern]
 	response = random.choice(tag_to_response[tag])
 
-	print(response)
-	print(pattern_to_tag_dict)
-	return(response)
-
-execute(" I feel so anxious.")
+	return(tag)
