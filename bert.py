@@ -95,6 +95,7 @@ def execute(user_input):
 	response = random.choice(tag_to_response[tag])
 
 	print(response)
+	print(pattern_to_tag_dict)
 	return(response)
 
-# execute(" I feel so anxious.")
+execute(" I feel so anxious.")

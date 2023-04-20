@@ -8,108 +8,122 @@ import numpy as np
 import math
 from sklearn.feature_extraction.text import CountVectorizer
 from nltk.stem import SnowballStemmer
+import random
+
+def execute_knn(user_input):
+
+    with open('intents.json', 'r') as f:
+        data = json.load(f)
 
 
-with open('intents.json', 'r') as f:
-    data = json.load(f)
+    # this is the list of classes
+    tags = [item["tag"] for item in data["intents"]]
 
+    # this is the list of patterns
+    patterns = [item["patterns"] for item in data["intents"]]
 
-# this is the list of classes
-tags = [item["tag"] for item in data["intents"]]
+    pattern_dict = {}
+    index = 0
+    for pattern_set in patterns:
+        print("this is pattern set")
+        print(pattern_set)
+        for pattern in pattern_set:
+            pattern_dict.update({pattern.lower(): index})
+        index += 1
 
-# this is the list of patterns
-patterns = [item["patterns"] for item in data["intents"]]
+    patterns = [inner for outer in patterns for inner in outer]
+    patterns = [item.lower() for item in patterns]
 
-pattern_dict = {}
-index = 0
-for pattern_set in patterns:
-    for pattern in pattern_set:
-        pattern_dict.update({pattern.lower(): index})
-    index += 1
-
-patterns = [inner for outer in patterns for inner in outer]
-patterns = [item.lower() for item in patterns]
-
-# worst vectorizer ever bruh
-vectorizer = CountVectorizer(
-    max_df=0.7, min_df=1)
+    # worst vectorizer ever bruh
+    vectorizer = CountVectorizer(
+        max_df=0.7, min_df=1)
 
 
 
-X = vectorizer.fit_transform(patterns).toarray()
-n = X.shape[0]  # num rows
-Y = np.array([[index] for _, index in pattern_dict.items()])
+    X = vectorizer.fit_transform(patterns).toarray()
+    n = X.shape[0]  # num rows
+    Y = np.array([[index] for _, index in pattern_dict.items()])
 
-X_train = np.hstack((X, Y))
+    X_train = np.hstack((X, Y))
 
-# should both have same number of rows
-assert (X.shape[0] == Y.shape[0])
-
-
-# TODO: change to cosine similarity
-def distance(x, xtest):
-    """
-    Input:
-    x: input vector of length d
-    xtest: input test vector of length d
-
-    Output:
-    distance = euclidean distance between x and xtest
-    """
-    distance = 0.0
-    for i in range(len(x)-1):  # last entry is the label
-        distance += (x[i] - xtest[i])**2
-    return math.sqrt(distance)
+    # should both have same number of rows
+    assert (X.shape[0] == Y.shape[0])
 
 
-def nearest_neighbors(X_train, xtest, k=5):
-    """
-    Input:
-    X_train: n input vectors of length d
-    xtest: input test vector of length d
-    k: number of neighbors to look at
+    # TODO: change to cosine similarity
+    def distance(x, xtest):
+        """
+        Input:
+        x: input vector of length d
+        xtest: input test vector of length d
 
-    Output:
-    neighbors = list of k nearest neighbors to xtest in X_train
-    """
-    distances = list()
-
-    for xi in X_train:
-        dist = distance(xi, xtest)
-        distances.append((xi, dist))
-
-    distances.sort(key=lambda pair: pair[1])  # sorts by distance
-
-    # gets the first k elements in the list
-    neighbors = [elt[0] for elt in distances[:k]]
-
-    # the problem is that with ties, it breaks them by picking the smallest number label,
-    # which isn't right if we have a direct match
-    # get around this setting all neighbors equal if dist == 0
-    if (distances[0][1] == 0):
-        neighbors = list()
-        for i in range(k):
-            neighbors.append(distances[0][0])
-    return neighbors
+        Output:
+        distance = euclidean distance between x and xtest
+        """
+        distance = 0.0
+        for i in range(len(x)-1):  # last entry is the label
+            distance += (x[i] - xtest[i])**2
+        return math.sqrt(distance)
 
 
-def knn_classify(X_train, xtest, k=5):
-    """
-    Input:
-    X_train: n input vectors of length d
-    xtest: input test vector of length d
-    k: number of neighbors to look at
+    def nearest_neighbors(X_train, xtest, k=5):
+        """
+        Input:
+        X_train: n input vectors of length d
+        xtest: input test vector of length d
+        k: number of neighbors to look at
 
-    Output:
-    prediction = mode of the nearest neighbors to xtest labels
-    """
-    neighbors = nearest_neighbors(X_train, xtest, k)
-    # label concatenated to training data
-    neighbor_labels = [neighbor[-1] for neighbor in neighbors]
-    prediction = max(set(neighbor_labels), key=neighbor_labels.count)
-    return prediction
+        Output:
+        neighbors = list of k nearest neighbors to xtest in X_train
+        """
+        distances = list()
+
+        for xi in X_train:
+            dist = distance(xi, xtest)
+            distances.append((xi, dist))
+
+        distances.sort(key=lambda pair: pair[1])  # sorts by distance
+
+        # gets the first k elements in the list
+        neighbors = [elt[0] for elt in distances[:k]]
+
+        # the problem is that with ties, it breaks them by picking the smallest number label,
+        # which isn't right if we have a direct match
+        # get around this setting all neighbors equal if dist == 0
+        if (distances[0][1] == 0):
+            neighbors = list()
+            for i in range(k):
+                neighbors.append(distances[0][0])
+        return neighbors
 
 
-snowball = SnowballStemmer(language='english')
-xtest = vectorizer.transform([snowball.stem("I feel worthless")]).toarray()[0]
-print(knn_classify(X_train, xtest, k=5))
+    def knn_classify(X_train, xtest, k=5):
+        """
+        Input:
+        X_train: n input vectors of length d
+        xtest: input test vector of length d
+        k: number of neighbors to look at
+
+        Output:
+        prediction = mode of the nearest neighbors to xtest labels
+        """
+        neighbors = nearest_neighbors(X_train, xtest, k)
+        # label concatenated to training data
+        neighbor_labels = [neighbor[-1] for neighbor in neighbors]
+        prediction = max(set(neighbor_labels), key=neighbor_labels.count)
+        return prediction
+
+    #dictionary that maps tag to a response
+    tag_to_response = {}
+
+    for item in data["intents"]: 
+        tag_to_response[item["tag"]] = item["responses"]
+
+
+    snowball = SnowballStemmer(language='english')
+    xtest = vectorizer.transform([snowball.stem(user_input)]).toarray()[0]
+    output = knn_classify(X_train, xtest, k=5)
+    print(tags[output])
+    print(random.choice(tag_to_response[tags[output]]))
+
+execute_knn("I AM SAD")
