@@ -162,7 +162,7 @@ def execute_bayes(user_input):
     # print(pattern_dict)
     output = classify(X, Y, xtest)
     response = random.choice(tag_to_response[tags[output]])
-    print(response)
+    # print(response)
     return(tags[output])
 
 

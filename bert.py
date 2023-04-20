@@ -3,7 +3,7 @@ from scipy import spatial
 import json, random
 from nltk.stem.snowball import SnowballStemmer
 
-def execute(user_input): 
+def execute_bert(user_input): 
 # get the user input 
 	# user_input = input("Input: ")
 	user_input = user_input

@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from bert import execute
+import main
 import random
 
 app = Flask(__name__)
@@ -22,7 +22,7 @@ def test():
 @app.route('/testPost', methods = ['GET', 'POST'])
 def testPost():
     user_input = request.json["user"]
-    bot_output = execute(user_input)
+    bot_output = main.execute_vote(user_input)
     return {"user_input" : user_input, "bot_output": bot_output}
 
 

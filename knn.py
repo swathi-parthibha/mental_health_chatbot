@@ -15,7 +15,6 @@ def execute_knn(user_input):
     with open('intents.json', 'r') as f:
         data = json.load(f)
 
-
     # this is the list of classes
     tags = [item["tag"] for item in data["intents"]]
 
@@ -25,8 +24,6 @@ def execute_knn(user_input):
     pattern_dict = {}
     index = 0
     for pattern_set in patterns:
-        print("this is pattern set")
-        print(pattern_set)
         for pattern in pattern_set:
             pattern_dict.update({pattern.lower(): index})
         index += 1
@@ -48,7 +45,6 @@ def execute_knn(user_input):
 
     # should both have same number of rows
     assert (X.shape[0] == Y.shape[0])
-
 
     # TODO: change to cosine similarity
     def distance(x, xtest):
@@ -123,7 +119,8 @@ def execute_knn(user_input):
     snowball = SnowballStemmer(language='english')
     xtest = vectorizer.transform([snowball.stem(user_input)]).toarray()[0]
     output = knn_classify(X_train, xtest, k=5)
-    print(tags[output])
-    print(random.choice(tag_to_response[tags[output]]))
+    # print(tags[output])
+    # print(random.choice(tag_to_response[tags[output]]))
+    return(tags[output])
 
 execute_knn("I AM SAD")
