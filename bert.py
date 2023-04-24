@@ -3,13 +3,14 @@ from scipy import spatial
 import json, random
 from nltk.stem.snowball import SnowballStemmer
 
-def execute_bert(user_input): 
-# get the user input 
+def execute_bert(user_input, data):
+# get the user input
 	# user_input = input("Input: ")
 	user_input = user_input
-	# intents patterns are stored as in JSON 
-	with open('intents.json', 'r') as f:
-			data = json.load(f)
+	# intents patterns are stored as in JSON
+	# with open('intents.json', 'r') as f:
+	# 		data = json.load(f)
+	data = data
 
 	# get the patterns from the intents and make them all lowercase
 	patterns = [item["patterns"] for item in data["intents"]]
@@ -19,17 +20,17 @@ def execute_bert(user_input):
 	#dictionary that maps pattern to tag
 	pattern_to_tag_dict = {}
 
-	for item in data["intents"]: 
-		for pattern in item["patterns"]: 
+	for item in data["intents"]:
+		for pattern in item["patterns"]:
 			pattern_to_tag_dict[pattern] = item["tag"]
 
 	#dictionary that maps tag to a response
 	tag_to_response = {}
 
-	for item in data["intents"]: 
+	for item in data["intents"]:
 		tag_to_response[item["tag"]] = item["responses"]
 
-	# remove unncessary punctuation 
+	# remove unncessary punctuation
 	punctuation_to_remove = ["?", "!", ".", "\'", ","]
 	cleaned_patterns = ["".join(
 			[char for char in item if char not in punctuation_to_remove]) for item in cleaned_patterns]
@@ -43,25 +44,25 @@ def execute_bert(user_input):
 	#implementing the snowball stemmer on the input
 	stemmer = SnowballStemmer("english")
 	user_input_stemmed = []
-	for word in user_input_cleaned: 
+	for word in user_input_cleaned:
 		user_input_stemmed += [stemmer.stem(word)]
 
-	#implementing the snowball stemmber of the patterns as well 
-	for i in range(len(cleaned_patterns)): 
+	#implementing the snowball stemmber of the patterns as well
+	for i in range(len(cleaned_patterns)):
 		pattern = ""
 		word_lst = cleaned_patterns[i].split()
-		for word in word_lst: 
+		for word in word_lst:
 			pattern = " ".join([pattern, stemmer.stem(word)])
 		cleaned_patterns[i] = pattern
 
 	# further cleans the input by removing words that are not in the pattern
 	# we need to do this because the model created is using the words in the cleaned_patterns
 	pattern_words = []
-	for sentence in cleaned_patterns: 
+	for sentence in cleaned_patterns:
 		pattern_words += sentence.split()
 
-	for word in user_input_stemmed: 
-		if word not in pattern_words: 
+	for word in user_input_stemmed:
+		if word not in pattern_words:
 			user_input_stemmed.remove(word)
 
 	#creating a dictionary that maps each cleaned pattern to an index
@@ -84,10 +85,10 @@ def execute_bert(user_input):
 	for i in range(len(vectors) - 1):
 		dist = spatial.distance.cosine(vectors[i], vectors[-1])
 
-		if dist < min_dist: 
+		if dist < min_dist:
 			min_dist = dist
 			min_index = i
-			
+
 	pattern_found = cleaned_patterns[min_index]
 	pattern_index = cleaned_pattern_to_index[pattern_found]
 	original_pattern = patterns[pattern_index]

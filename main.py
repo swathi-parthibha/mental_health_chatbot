@@ -1,4 +1,4 @@
-#This is the file where all the preprocessing of the data occurs 
+#This is the file where all the preprocessing of the data occurs
 
 import json, random
 import knn, naivebayes, bert
@@ -6,21 +6,21 @@ from collections import Counter
 
 
 
-def execute_vote(user_input): 
+def execute_vote(user_input):
 
     with open('intents.json', 'r') as f:
        data = json.load(f)
 
     tag_to_response = {}
 
-    for item in data["intents"]: 
+    for item in data["intents"]:
        tag_to_response[item["tag"]] = item["responses"]
-		  
+
     computed_tags = []
-    
+
     knn_output = knn.execute_knn(user_input)
-    bayes_output = naivebayes.execute_bayes(user_input)
-    bert_output = bert.execute_bert(user_input)
+    bayes_output = naivebayes.execute_bayes(user_input, data)
+    bert_output = bert.execute_bert(user_input, data)
 
 
     computed_tags.append(bert_output)

@@ -6,10 +6,7 @@ import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
 import random
 
-def execute_bayes(user_input):
-    with open('intents.json', 'r') as f:
-        data = json.load(f)
-
+def execute_bayes(user_input,data):
 
     # this is the list of classes
     tags = [item["tag"] for item in data["intents"]]
@@ -53,7 +50,7 @@ def execute_bayes(user_input):
     #dictionary that maps tag to a response
     tag_to_response = {}
 
-    for item in data["intents"]: 
+    for item in data["intents"]:
         tag_to_response[item["tag"]] = item["responses"]
 
     def naivebayesPY(x, y):
