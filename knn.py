@@ -12,24 +12,6 @@ import random
 
 def execute_knn(user_input):
 
-    with open('intents.json', 'r') as f:
-        data = json.load(f)
-
-    # this is the list of classes
-    tags = [item["tag"] for item in data["intents"]]
-
-    # this is the list of patterns
-    patterns = [item["patterns"] for item in data["intents"]]
-
-    pattern_dict = {}
-    index = 0
-    for pattern_set in patterns:
-        for pattern in pattern_set:
-            pattern_dict.update({pattern.lower(): index})
-        index += 1
-
-    patterns = [inner for outer in patterns for inner in outer]
-    patterns = [item.lower() for item in patterns]
 
     # worst vectorizer ever bruh
     vectorizer = CountVectorizer(
@@ -112,7 +94,7 @@ def execute_knn(user_input):
     #dictionary that maps tag to a response
     tag_to_response = {}
 
-    for item in data["intents"]: 
+    for item in data["intents"]:
         tag_to_response[item["tag"]] = item["responses"]
 
 
